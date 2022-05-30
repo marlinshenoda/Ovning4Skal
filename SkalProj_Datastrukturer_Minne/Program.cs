@@ -18,6 +18,7 @@ namespace SkalProj_Datastrukturer_Minne
                     + "\n2. Examine a Queue"
                     + "\n3. Examine a Stack"
                     + "\n4. CheckParanthesis"
+                    + "\n5. Fibonacci"
                     + "\n0. Exit the application");
                 char input = ' '; //Creates the character input to be used with the switch-case below.
                 try
@@ -43,6 +44,10 @@ namespace SkalProj_Datastrukturer_Minne
                     case '4':
                         CheckParanthesis();
                         break;
+                    case '5':
+                       Console.WriteLine("Number 7 into the sequence: " + F(7));
+                        break;  
+                   
                     /*
                      * Extend the menu to include the recursive 
                      * and iterative exercises.
@@ -78,6 +83,39 @@ namespace SkalProj_Datastrukturer_Minne
             //string value = input.substring(1);
 
             //switch(nav){...}
+            List<string> theList = new List<string>();
+            bool done = false;
+            do
+            {
+
+                Console.WriteLine("\n+Name to add\n-name to remove\n0 to exit\n");
+
+                string input = Console.ReadLine()!;
+                char nav = input[0];
+                string value = input.Substring(1);
+
+                switch (nav)
+                {
+                    case '+':
+                        theList.Add(value);
+                        Console.WriteLine($"\nCurrent capacity: { theList.Capacity}");
+                        Console.WriteLine($"\nCurrent COUNT: { theList.Count}");
+                        break;
+                    case '-':
+                        theList.Remove(value);
+                        Console.WriteLine($"\nCurrent capacity: { theList.Capacity}");
+                        Console.WriteLine($"\nCurrent COUNT: { theList.Count}");
+
+                        break;
+                    case '0':
+                        done = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nthe first character must be + or -");
+                        break;
+                }
+            } while (!done);
+
         }
 
         /// <summary>
@@ -90,11 +128,57 @@ namespace SkalProj_Datastrukturer_Minne
              * Create a switch with cases to enqueue items or dequeue items
              * Make sure to look at the queue after Enqueueing and Dequeueing to see how it behaves
             */
-        }
+            Queue<string> theQueue = new Queue<string>();
 
-        /// <summary>
-        /// Examines the datastructure Stack
-        /// </summary>
+            bool done = false;
+            do
+            {
+
+                Console.WriteLine("\nWrite +Customername to add an ICA-customer\nWrite - to assist the first customer\n0 to exit\n");
+
+                string input = Console.ReadLine()!;
+                char nav = input[0];
+                string value = input.Substring(1);
+
+                switch (nav)
+                {
+                    case '+':
+                        theQueue.Enqueue(value);
+                        ShowCustomers(theQueue);
+                        break;
+                    case '-':
+                        if (theQueue.Count > 0)
+                        {
+                            Console.WriteLine($"\nassisted: {theQueue.Dequeue()}");
+                            ShowCustomers(theQueue);
+                        }
+                        else
+                            Console.WriteLine("\nno customers in line");
+                        break;
+                    case '0':
+                        done = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nplease use only + or -");
+                        break;
+                }
+            } while (!done);
+        
+    }
+         private static void ShowCustomers(Queue<string> theQueue)
+        {
+            Console.WriteLine("\nPeople in line: ");
+            foreach (String customer in theQueue)
+            {
+                Console.WriteLine(customer);
+            }
+
+
+            /// <summary>
+            /// Examines the datastructure Stack
+            /// </summary>
+
+        }
         static void ExamineStack()
         {
             /*
@@ -102,6 +186,50 @@ namespace SkalProj_Datastrukturer_Minne
              * Create a switch with cases to push or pop items
              * Make sure to look at the stack after pushing and and poping to see how it behaves
             */
+            Stack<string> theSackQueue = new Stack<string>();
+
+            bool done = false;
+            do
+            {
+                Console.WriteLine("\n+word to add word to reversed a text\n- to remove the last word\n0 to exit");
+
+                string input = Console.ReadLine()!;
+                char nav = input[0];
+                string value = input.Substring(1);
+
+                switch (nav)
+                {
+                    case '+':
+                        theSackQueue.Push(value);
+                        ShowReveresedWords(theSackQueue);
+                        break;
+                    case '-':
+                        if (theSackQueue.Count > 0)
+                        {
+                            theSackQueue.Pop();
+                            ShowReveresedWords(theSackQueue);
+                        }
+                        else
+                            Console.WriteLine("\nno text to reverse");
+                        break;
+                    case '0':
+                        done = true;
+                        break;
+                    default:
+                        Console.WriteLine("\nplease use only + or -");
+                        break;
+                }
+            } while (!done);
+
+        }
+        private static void ShowReveresedWords(Stack<string> text)
+        {
+            Console.WriteLine("\ncurrent state of reversed the text: ");
+            foreach (String word in text)
+            {
+                Console.WriteLine(word);
+            }
+           
         }
 
         static void CheckParanthesis()
@@ -111,9 +239,62 @@ namespace SkalProj_Datastrukturer_Minne
              * Example of correct: (()), {}, [({})],  List<int> list = new List<int>() { 1, 2, 3, 4 };
              * Example of incorrect: (()]), [), {[()}],  List<int> list = new List<int>() { 1, 2, 3, 4 );
              */
+            bool isCorrect = true;
+
+            Console.Write("\nEnter the string: ");
+            string input = Console.ReadLine()!;
+
+            Stack<char> stack = new Stack<char>();
+
+            foreach (char item in input)
+            {
+                if (item == '(' || item == '{' || item == '[')
+                {
+                    stack.Push(item);
+                }
+                else if (item == ')' || item == '}' || item == ']')
+                {
+                    //if (stack.Count > 0 && stack.Pop() != GetOppositParentesis(alphabet))
+                    //{
+                    //    isCorrect = false;
+                    //    break;
+                    //}
+                    if (stack.Count == 0)
+                    {
+                        isCorrect= false;
+                    }
+                    else if (!isMatchingPair(stack.Pop(),item))
+                                         
+                    {
+                        isCorrect= false;
+                    }
+                }
+            }
+
+            if (!isCorrect || stack.Count > 0)
+                Console.WriteLine("\nThe string is incorrect\n");
+            else
+                Console.WriteLine("\nThe string is correct\n");
 
         }
-
+        static Boolean isMatchingPair(char character1,char character2)
+        {
+            if (character1 == '(' && character2 == ')')
+                return true;
+            else if (character1 == '{' && character2 == '}')
+                return true;
+            else if (character1 == '[' && character2 == ']')
+                return true;
+            else
+                return false;
+        }
+   
+        static int F(int n)
+        {
+            if (n <= 2)
+                return 1;
+            return F(n - 1)+F(n-2);
+        }
     }
 }
 
